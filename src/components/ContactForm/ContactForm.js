@@ -1,37 +1,39 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import styles from './ContactForm.module.css';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+export const ContactForm = (props) =>{
+
+const [name, setName] = useState('');
+const [number, setNumber] = useState('');
+
+const onChange = evt => {
+  if(evt.target.name === 'name'){
+ setName(evt.target.value)
+return
+}
+setNumber(evt.target.value) 
   };
 
-  onChange = evt => {
- 
-    this.setState({ [evt.target.name]: evt.target.value });
-  };
-
-  onSubmit = evt => {
+  const onSubmit = evt => {
     evt.preventDefault();
-    this.props.createContact({
-      name: this.state.name,
-      number: this.state.number,
+    props.createContact({
+      name,
+      number
     });
 
     evt.target.reset();
   };
 
-  render() {
+ 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={onSubmit}>
         <label>
           Name
           <input
             type="text"
             name="name"
             required
-            onChange={this.onChange}
+            onChange={onChange}
             pattern="^[a-zA-Z]+$"
           />
         </label>
@@ -41,7 +43,7 @@ export class ContactForm extends Component {
             type="tel"
             name="number"
             required
-            onChange={this.onChange}
+            onChange={onChange}
             pattern="^[ 0-9]+$"
           />
         </label>
@@ -49,4 +51,4 @@ export class ContactForm extends Component {
       </form>
     );
   }
-}
+
